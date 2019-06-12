@@ -1,5 +1,8 @@
 package com.github.daggerok;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -24,13 +27,15 @@ public class AppTest {
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@SpringBootTest
 @DisplayName("Junit 5 Test")
+@AllArgsConstructor(onConstructor_ = @Autowired)
 class AppTest {
+
+  private GenericApplicationContext ctx;
 
   @Test
   void main() {
-    GenericApplicationContext ctx = new AnnotationConfigApplicationContext(App.class);
     assertThat(ctx).isNotNull();
-    App.main(new String[0]);
   }
 }

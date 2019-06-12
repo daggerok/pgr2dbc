@@ -9,6 +9,7 @@ buildscript {
 }
 
 plugins {
+  idea
   java
   kotlin("jvm") version Globals.kotlinVersion
   kotlin("plugin.spring") version Globals.kotlinVersion
@@ -27,18 +28,20 @@ extra["junit.version"] = Globals.junitVersion
 extra["lombok.version"] = Globals.lombokVersion
 extra["junit-jupiter.version"] = Globals.junitJupiterVersion
 
-extra["flyway.user"] = "postgres"
-extra["flyway.password"] = "postgres"
-extra["flyway.url"] = "jdbc:postgresql://127.0.0.1:5432/postgres"
-//extra["flyway.configFiles"] = "${rootProject.projectDir.absolutePath}/src/main/resources/db/migration"
-//extra["flyway.schemas"] = "schema1,schema2,schema3,public"
-//extra["flyway.placeholders.otherplaceholder"] = "value123"
-//extra["flyway.placeholders.keyABC"] = "valueXYZ"
-
+//extra["flyway.user"] = "postgres"
+//extra["flyway.password"] = "postgres"
+//extra["flyway.url"] = "jdbc:postgresql://127.0.0.1:5432/postgres"
+////extra["flyway.configFiles"] = "classpath:/flyway.properties"
+////extra["flyway.schemas"] = "schema1,schema2,schema3,public"
+////extra["flyway.placeholders.otherplaceholder"] = "value123"
+////extra["flyway.placeholders.keyABC"] = "valueXYZ"
 flyway {
-//  locations = arrayOf(
-//      ""
-//  )
+  user = "postgres"
+  password = "postgres"
+  url = "jdbc:postgresql://127.0.0.1:5432/postgres"
+  locations = arrayOf(
+      "classpath:db/migration" // -> src/main/resources/db/migration
+  )
 }
 
 java {
@@ -56,19 +59,26 @@ lombok {
   version = Globals.lombokVersion
 }
 
-sourceSets {
-  main {
-    java.srcDir("src/main/kotlin")
-  }
-  test {
-    java.srcDir("src/test/kotlin")
-  }
-}
+//// Comment this fucking shit! It doesn't work...
+//sourceSets {
+//  main {
+//    java.srcDirs(
+//        "src/main/java",
+//        "src/main/kotlin"
+//    )
+//  }
+//  test {
+//    java.srcDirs(
+//        "src/test/java",
+//        "src/test/kotlin"
+//    )
+//  }
+//}
 
 val flywayMigration = configurations.create("flywayMigration")
 
 dependencies {
-//  flywayMigration("org.postgresql:postgresql:${Globals.postgresVersion}")
+  flywayMigration("org.postgresql:postgresql:${Globals.postgresVersion}")
 
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))

@@ -26,6 +26,7 @@ _update versions_
 
 _resources_
 
+* [TODO: Build reactive event store](https://www.youtube.com/watch?v=zUSWsJteRfw)
 * [DZone: Postgres R2DBC](https://dzone.com/articles/introduction-to-reactive-apis-with-postgres-r2dbc)
 * [Migrate using Gradle flyway plugin](https://flywaydb.org/documentation/gradle/migrate#errorOverrides)
 * [Gradle flyway plugin usage](https://flywaydb.org/documentation/gradle/)
