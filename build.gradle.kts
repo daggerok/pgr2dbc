@@ -86,7 +86,6 @@ dependencies {
   testImplementation(kotlin("test-junit5"))
 
   implementation(platform("org.springframework.boot:spring-boot-dependencies:${Globals.springBootVersion}"))
-  implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.projectreactor:reactor-test")
