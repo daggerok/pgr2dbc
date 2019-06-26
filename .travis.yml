@@ -44,11 +44,11 @@ before_install:
   - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
   - stop_any 5432 5672 27017 8080 8000 8081 80 80
 before_script:
+  - docker pull postgres:alpine
   - cd $TRAVIS_BUILD_DIR && gradle :wrapper
   - cd $TRAVIS_BUILD_DIR && gradle :wrapper --stop
   - cd $TRAVIS_BUILD_DIR && ./gradlew up
 after_script:
-  - docker pull postgres:alpine
   - cd $TRAVIS_BUILD_DIR && ./gradlew rm
 jobs:
   include:
