@@ -11,6 +11,7 @@ object Globals {
   const val vavrVersion = "0.10.0"
   const val kotlinVersion = "1.3.40"
   const val lombokVersion = "1.18.8"
+  const val jacksonVersion = "2.9.9"
   const val junitVersion = "4.13-beta-3"
   const val junitJupiterVersion = "5.5.0-RC2"
   const val r2dbcPostgresVersion = "1.0.0.M7"
