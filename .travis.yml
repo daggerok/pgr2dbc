@@ -48,40 +48,52 @@ before_script:
   - cd $TRAVIS_BUILD_DIR && gradle :wrapper
   - cd $TRAVIS_BUILD_DIR && gradle :wrapper --stop
   - cd $TRAVIS_BUILD_DIR && ./gradlew up
+  - docker ps
+  
 after_script:
   - cd $TRAVIS_BUILD_DIR && ./gradlew rm
 jobs:
   include:
     - stage: test
       jdk: openjdk8
-      name: Gradle Java 8 Build (openjdk8)
+      name: Gradle tests (openjdk8)
       script:
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
-        - sleep 5s
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
         - cd $TRAVIS_BUILD_DIR && ./gradlew test
+    - stage: test
+      jdk: openjdk11
+      name: Gradle tests (openjdk11)
+      script:
+        - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
+        - cd $TRAVIS_BUILD_DIR && ./gradlew test
+    - stage: test
+      jdk: openjdk8
+      name: Gradle integration tests (openjdk8)
+      script:
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-jar.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
         - cd $TRAVIS_BUILD_DIR && ./gradlew assemble
         - java -jar $TRAVIS_BUILD_DIR/build/libs/*-SNAPSHOT.jar &
         - wait_for 8080
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
         - http :8080/employees name=ololo
         - http :8080/employees name=trololo salary=12345
         - http :8080/employees
         - stop_any 80 8080
     - stage: test
       jdk: openjdk11
-      name: Gradle Java 11 Build (openjdk11)
+      name: Gradle integration tests (openjdk11)
       script:
-        - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
-        - sleep 5s
-        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
-        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
-        - cd $TRAVIS_BUILD_DIR && ./gradlew test
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-jar.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
         - cd $TRAVIS_BUILD_DIR && ./gradlew assemble
         - java -jar $TRAVIS_BUILD_DIR/build/libs/*-SNAPSHOT.jar &
         - wait_for 8080
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
+        - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
         - http :8080/employees name=ololo
         - http :8080/employees name=trololo salary=12345
         - http :8080/employees
