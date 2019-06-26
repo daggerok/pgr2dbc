@@ -26,6 +26,8 @@ version = Globals.Project.version
 
 extra["junit.version"] = Globals.junitVersion
 extra["lombok.version"] = Globals.lombokVersion
+extra["kotlin.version"] = Globals.kotlinVersion
+extra["jackson.version"] = Globals.jacksonVersion
 extra["junit-jupiter.version"] = Globals.junitJupiterVersion
 
 //extra["flyway.user"] = "postgres"
@@ -80,6 +82,7 @@ val flywayMigration = configurations.create("flywayMigration")
 dependencies {
   flywayMigration("org.postgresql:postgresql:${Globals.postgresVersion}")
 
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom:${Globals.kotlinVersion}"))
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
   testImplementation(kotlin("test-junit"))
@@ -94,6 +97,7 @@ dependencies {
   implementation("org.springframework.boot.experimental:spring-boot-starter-data-r2dbc")
   implementation("io.r2dbc:r2dbc-postgresql:${Globals.r2dbcPostgresVersion}")
 
+  implementation(platform("com.fasterxml.jackson:jackson-bom:${Globals.jacksonVersion}"))
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
   implementation("io.vavr:vavr:${Globals.vavrVersion}")
