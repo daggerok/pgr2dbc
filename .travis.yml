@@ -45,8 +45,10 @@ before_install:
   - stop_any 5432 5672 27017 8080 8000 8081 80 80
 before_script:
   - cd $TRAVIS_BUILD_DIR && gradle :wrapper
+  - cd $TRAVIS_BUILD_DIR && gradle :wrapper --stop
   - cd $TRAVIS_BUILD_DIR && ./gradlew up
 after_script:
+  - docker pull postgres:alpine
   - cd $TRAVIS_BUILD_DIR && ./gradlew rm
 jobs:
   include:
@@ -55,7 +57,6 @@ jobs:
       name: Gradle Java 8 Build (openjdk8)
       script:
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
-        - cd $TRAVIS_BUILD_DIR && gradle :wrapper
         - sleep 5s
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
@@ -73,7 +74,6 @@ jobs:
       name: Gradle Java 11 Build (openjdk11)
       script:
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
-        - cd $TRAVIS_BUILD_DIR && gradle :wrapper
         - sleep 5s
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayClean
         - cd $TRAVIS_BUILD_DIR && ./gradlew flywayMigrate
@@ -89,15 +89,11 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: Gradle Java 8 Updates (openjdk8)
-      script:
-       - cd $TRAVIS_BUILD_DIR && gradle :wrapper
-       - cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
     - stage: test
       jdk: openjdk11
       name: Gradle Java 11 Updates (openjdk11)
-      script:
-        - cd $TRAVIS_BUILD_DIR && gradle :wrapper
-        - cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
 cache:
   directories:
     - ~/.docker
