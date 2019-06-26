@@ -49,10 +49,9 @@ after_script:
   - ./gradlew rm
 jobs:
   include:
-    # java 8
-    - stage: openjdk8
+    - stage: test
       jdk: openjdk8
-      name: "Gradle Java 8 Build"
+      name: Gradle Java 8 Build (openjdk8)
       script:
         - cd $TRAVIS_BUILD_DIR
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
@@ -68,14 +67,9 @@ jobs:
         - http :8080/employees name=trololo salary=12345
         - http :8080/employees
         - stop_any 80 8080
-    - stage: openjdk8
-      jdk: openjdk8
-      name: "Gradle Java 8 Updates"
-      script: cd $TRAVIS_BUILD_DIR && gradle :wrapper && ./gradlew dependencyUpdates -Drevision=release
-    # java 11
-    - stage: openjdk11
+    - stage: test
       jdk: openjdk11
-      name: "Gradle Java 11 Build"
+      name: Gradle Java 11 Build (openjdk11)
       script:
         - cd $TRAVIS_BUILD_DIR
         - cp -Rf $TRAVIS_BUILD_DIR/src/main/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/src/main/resources/logback.xml
@@ -91,10 +85,18 @@ jobs:
         - http :8080/employees name=trololo salary=12345
         - http :8080/employees
         - stop_any 80 8080
-    - stage: openjdk11
+    - stage: test
+      jdk: openjdk8
+      name: Gradle Java 8 Updates (openjdk8)
+      script:
+       - cd $TRAVIS_BUILD_DIR && gradle :wrapper
+       - cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
+    - stage: test
       jdk: openjdk11
-      name: "Gradle Java 11 Updates"
-      script: cd $TRAVIS_BUILD_DIR ; gradle :wrapper ; ./gradlew dependencyUpdates -Drevision=release
+      name: Gradle Java 11 Updates (openjdk11)
+      script:
+        - cd $TRAVIS_BUILD_DIR && gradle :wrapper
+        - cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
 cache:
   directories:
     - ~/.docker
