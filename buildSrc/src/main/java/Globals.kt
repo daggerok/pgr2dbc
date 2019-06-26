@@ -16,7 +16,7 @@ object Globals {
   const val junitJupiterVersion = "5.5.0-RC2"
   const val r2dbcPostgresVersion = "1.0.0.M7"
   const val r2dbcSpringVersion = "0.1.0.M1"
-  const val springBootVersion = "2.2.0.M3"
+  const val springBootVersion = "2.2.0.M4"
   const val postgresVersion = "42.2.6"
 
   object Gradle {
